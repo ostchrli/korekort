@@ -52,7 +52,7 @@
   .pname { left:6.1%; top:35.4%; transform:translateY(-50%); color:#2d2170; font-size:7.3cqw; line-height:8cqw; font-weight:700; white-space:normal; width:49%; overflow-wrap:normal; word-break:normal; }
   .fl { top:54.7%; transform:translateY(-50%); color:#25205f; font-size:2.95cqw; font-weight:700; white-space:nowrap; letter-spacing:.02em; }
   .fv { top:59.3%; transform:translateY(-50%); color:#25205f; font-size:5.1cqw; font-weight:700; white-space:nowrap; }
-  .wm { left:45.97%; top:18.85%; width:17.3%; height:auto; pointer-events:none; user-select:none; will-change:transform; transform:translate3d(var(--wx,0px),var(--wy,0px),0); }
+  .wm { left:45.97%; top:18.85%; width:17.3%; height:auto; pointer-events:none; user-select:none; will-change:filter; filter:hue-rotate(var(--wh,0deg)); }
   .title { left:14.2%; top:6.35%; transform:translateY(-50%); color:#fff; font-size:4.4cqw; font-weight:700; letter-spacing:.09em; white-space:nowrap; }
 
   .photo { filter:grayscale(1); background-position:center; background-size:cover; background-repeat:no-repeat; }
@@ -588,6 +588,7 @@
     '<h2>Nulstil appen</h2><p>Når du nulstiller appen, bliver alle oplysninger og dit billede slettet fra telefonen, og kortet vender tilbage til udgangspunktet. Det kan ikke fortrydes.</p><button class="sbtn warn" id="rReset" type="button">Nulstil appen</button><div class="sok" id="rOk" style="display:none">Appen er nulstillet.</div>'},
    mHelp:{t:'Hjælp og support',h:
     '<h1>Hjælp og support</h1><p>Her finder du svar på det, de fleste spørger om.</p>'+
+    '<h2>Logoet flytter sig ikke</h2><p>DK-logoet på kortet følger telefonens bevægelser. Tryk på knappen, og tillad bevægelse, hvis telefonen spørger.</p><button class="sbtn sec" id="hMot" type="button">Slå bevægelse til</button><p id="hMotSt" style="margin-top:3cqw;color:#5a5688"></p>'+
     '<h2>Kameraet virker ikke</h2><p>Tjek, at appen har lov til at bruge kameraet. Det gør du i telefonens indstillinger under appens tilladelser. Åbn derefter Scan kort igen.</p>'+
     '<h2>Jeg kan ikke se mit billede</h2><p>Hold fingeren på de tre prikker øverst til højre, vælg billedet igen og tryk Gem.</p>'+
     '<h2>Mine oplysninger er væk</h2><p>Oplysningerne gemmes kun på din telefon. Hvis du har ryddet appens data eller slettet appen, skal du lægge dem ind igen.</p>'+
@@ -609,6 +610,23 @@
         if(!armed){armed=true;rr.textContent='Tryk igen for at bekræfte';return;}
         if(window.kkReset)window.kkReset();armed=false;rr.textContent='Nulstil appen';$('rOk').style.display='';
       });
+    }
+    if(id==='mHelp'&&$('hMot')){
+      var st=$('hMotSt');
+      var upd=function(){
+        if(!$('hMotSt')){clearInterval(tm);return;}
+        var m=window.kkMotion&&window.kkMotion.state();
+        if(!m){st.textContent='Bevægelse er ikke klar.';return;}
+        var t;
+        if(m.got)t='Virker. Telefonen sender bevægelse ('+Math.round(m.g)+'°, '+Math.round(m.b)+'°).';
+        else if(m.framed)t='Du ser siden inde i en anden app (fx Claude). Der er bevægelse blokeret. Åbn siden fra dit GitHub-link eller fra appen på startskærmen.';
+        else if(!m.has)t='Denne browser har ingen bevægelsessensor.';
+        else if(m.perm&&m.perm.indexOf('granted')<0)t='Tilladelsen blev afvist. Luk appen helt, åbn den igen og tryk på knappen. På iPhone kan du også slette og tilføje appen igen.';
+        else t='Ingen bevægelse endnu. Tryk på knappen, tillad bevægelse og vip telefonen.';
+        st.textContent=t;
+      };
+      var tm=setInterval(upd,400);upd();
+      $('hMot').addEventListener('click',function(){if(window.kkMotion)window.kkMotion.ask();});
     }
     if(id==='mRate'){
       var bs=sb.querySelectorAll('#rStars button'),v=0;
@@ -642,36 +660,54 @@
 (function(){
   var wm=document.querySelector('.wm'),app=document.querySelector('.app');
   if(!wm||!app)return;
-  var bg=null,bb=null,ba=null,tx=0,ty=0,cx=0,cy=0,on=false,raf=0;
+  var lastG=0,lastB=0,permRes='',gotOri=false,bg=null,bb=null,ba=null,tx=0,ty=0,cx=0,cy=0,on=false,raf=0;
   function clamp(v,m){return v>m?m:v<-m?-m:v;}
   function wrap(d){while(d>180)d-=360;while(d<-180)d+=360;return d;}
   function onOri(e){
     var g=e.gamma,b=e.beta,a=e.alpha;if(g==null||b==null)return;
+    gotOri=true;lastG=g;lastB=b;
     if(a==null)a=0;
     if(bg===null){bg=g;bb=b;ba=a;}
     bg+=(g-bg)*0.003;bb+=(b-bb)*0.003;ba+=wrap(a-ba)*0.003;
     var R=app.clientWidth*0.075;
-    var dx=clamp((g-bg)/30,1)+clamp(wrap(a-ba)/70,1)*0.7;
-    tx=clamp(dx,1.4)*R;ty=clamp((b-bb)/30,1)*R;
+    var dx=clamp((g-bg)/30,1)-clamp(wrap(a-ba)/70,1)*0.7;
+    tx=clamp(dx,1.4)*R;ty=-clamp((b-bb)/30,1)*R;
     if(!raf)raf=requestAnimationFrame(step);
   }
   function step(){
     raf=0;cx+=(tx-cx)*0.18;cy+=(ty-cy)*0.18;
-    wm.style.setProperty('--wx',cx.toFixed(2)+'px');wm.style.setProperty('--wy',cy.toFixed(2)+'px');
+    var R2=app.clientWidth*0.075;wm.style.setProperty('--wh',(((cx+cy*0.7)/R2)*90).toFixed(1)+'deg');
     if(Math.abs(tx-cx)>0.05||Math.abs(ty-cy)>0.05)raf=requestAnimationFrame(step);
   }
   function enable(){if(on)return;on=true;window.addEventListener('deviceorientation',onOri);}
-  var D=window.DeviceOrientationEvent;
-  if(D){
-    enable();
-    if(typeof D.requestPermission==='function'){
-      // iOS asks for permission, and only after a tap
-      var ask=function(){
-        try{D.requestPermission().then(function(r){if(r==='granted'){enable();document.removeEventListener('click',ask,true);}}).catch(function(){});}catch(e){}
-      };
-      document.addEventListener('click',ask,true);
-    }
+  var D=window.DeviceOrientationEvent,M=window.DeviceMotionEvent;
+  if(D)enable();
+  var asked=false;
+  function ask(){
+    if(asked)return;
+    var fns=[];
+    if(D&&typeof D.requestPermission==='function')fns.push(D.requestPermission());
+    if(M&&typeof M.requestPermission==='function')fns.push(M.requestPermission());
+    if(!fns.length)return;
+    asked=true;
+    Promise.all(fns.map(function(p){return p.catch(function(){return 'denied';});})).then(function(r){
+      permRes=r.join(',');
+      if(r.indexOf('granted')>-1){enable();}
+      else{asked=false;}
+    }).catch(function(){asked=false;});
   }
+  ['click','touchend','pointerup'].forEach(function(ev){document.addEventListener(ev,ask,true);});
+  // Fallback: if the phone gives no motion data, the logo follows your finger / mouse
+  function follow(e){
+    if(gotOri)return;
+    var r=app.getBoundingClientRect();
+    var nx=clamp(((e.clientX-r.left)/r.width-0.5)*2,1),ny=clamp(((e.clientY-r.top)/r.height-0.5)*2,1);
+    var R=app.clientWidth*0.075;tx=nx*R;ty=ny*R;
+    if(!raf)raf=requestAnimationFrame(step);
+  }
+  document.addEventListener('pointermove',follow,true);
+  document.addEventListener('pointerdown',follow,true);
+  window.kkMotion={ask:function(){asked=false;ask();},state:function(){return {has:!!D,got:gotOri,perm:permRes,g:lastG,b:lastB,framed:window.self!==window.top,needs:!!(D&&typeof D.requestPermission==='function')};}};
 })();
 </script>
 </body>
