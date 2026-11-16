@@ -67,7 +67,7 @@
   .pname { left:6.1%; top:calc(12.6% + 52.3cqw); transform:translateY(-100%); color:#2d2170; font-size:6.3cqw; line-height:8.46cqw; font-weight:600; white-space:normal; width:47%; overflow-wrap:normal; word-break:normal; }
   .fl { top:53.75%; transform:translateY(-50%); color:#25205f; font-size:2.9cqw; font-weight:700; white-space:nowrap; letter-spacing:.02em; }
   .fv { top:56.9%; transform:translateY(-50%); color:#25205f; font-size:4.95cqw; font-weight:600; white-space:nowrap; }
-  .wm { left:33.3%; top:14.0%; width:30.4%; transform:scale(.93); transform-origin:50% 50%; height:auto; aspect-ratio:712/720; pointer-events:none; user-select:none; -webkit-mask-size:100% 100%; mask-size:100% 100%; -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat; background:linear-gradient(135deg,#82f096 0%,#64e8e8 6%,#6e96f6 12%,#a082ec 20%,#be96ec 28%,#a5aaee 36%,#cca2e8 43%,#f292ac 52%,#f8a896 58%,#e8e88c 64%,#82f096 70%,#64e8e8 76%,#6e96f6 82%,#a082ec 90%,#e28cc8 100%); background-size:500% 500%; background-repeat:no-repeat; background-position:calc(var(--wx,45)*1%) calc(var(--wy,45)*1%); will-change:background-position; }
+  .wm { left:33.3%; top:14.0%; width:30.4%; transform:scale(.93); transform-origin:50% 50%; height:auto; aspect-ratio:712/720; pointer-events:none; user-select:none; -webkit-mask-size:100% 100%; mask-size:100% 100%; -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat; background:linear-gradient(135deg,#82f096 0%,#64e8e8 6%,#6e96f6 12%,#a082ec 20%,#be96ec 28%,#a5aaee 36%,#cca2e8 43%,#f292ac 52%,#f8a896 58%,#e8e88c 64%,#82f096 70%,#64e8e8 76%,#6e96f6 82%,#a082ec 90%,#e28cc8 100%); background-size:500% 500%; background-repeat:no-repeat; background-position:calc(var(--wx,50)*1%) calc(var(--wy,50)*1%); will-change:background-position; }
   .title { left:14.2%; top:6.35%; transform:translateY(-50%); color:#fff; font-size:4.4cqw; font-weight:700; letter-spacing:.09em; white-space:nowrap; }
 
   .photo { filter:grayscale(1); background-position:center; background-size:cover; background-repeat:no-repeat; }
@@ -178,6 +178,13 @@
   #rateDlg .rs button { background:none; border:0; padding:0; cursor:pointer; }
   #rateDlg .rs svg { width:8.4cqw; height:8.4cqw; fill:none; stroke:#007aff; stroke-width:1.5; stroke-linejoin:round; }
   #rateDlg .rs button.on svg { fill:#007aff; }
+  #permDlg { position:absolute; inset:0; z-index:70; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,.42); font-family:-apple-system,"SF Pro Text",system-ui,sans-serif; }
+  #permDlg.open { display:flex; }
+  #permDlg .rc { width:70cqw; background:rgba(242,242,247,.97); border-radius:4.2cqw; text-align:center; overflow:hidden; color:#000; }
+  #permDlg .ri { width:16cqw; height:16cqw; border-radius:3.6cqw; background:#fff; margin:5cqw auto 3cqw; display:flex; align-items:center; justify-content:center; color:#031a37; font-weight:700; font-size:5.4cqw; box-shadow:0 0 0 1px rgba(0,0,0,.08); }
+  #permDlg .rt { font-size:4.3cqw; font-weight:600; padding:0 4cqw; line-height:1.25; }
+  #permDlg .rm { font-size:3.5cqw; padding:1.2cqw 4cqw 4.4cqw; line-height:1.3; }
+  #permDlg .rn { display:block; width:100%; border:0; border-top:1px solid rgba(60,60,67,.3); background:none; color:#007aff; font-size:4.3cqw; font-weight:600; padding:3.4cqw 0; font-family:inherit; cursor:pointer; }
   #rateDlg .rn { display:block; width:100%; border:0; border-top:1px solid rgba(60,60,67,.3); background:none; color:#007aff; font-size:4.3cqw; padding:3.4cqw 0; font-family:inherit; cursor:pointer; }
   #subScr .sbody .lnk { color:#4b4fb0; }
   #subScr .sbtn { display:block; width:100%; margin-top:4cqw; padding:3.6cqw 3cqw; border-radius:2cqw; border:0; background:#2b2870; color:#fff; font:inherit; font-size:3.8cqw; font-weight:600; cursor:pointer; -webkit-tap-highlight-color:transparent; }
@@ -659,7 +666,7 @@
    ['Tilbage','Back'],['Kopiér','Copy'],['Oplys CPR nummer','Share CPR number'],['Forstørret billede','Enlarged photo'],['NAVN','NAME'],
    ['Vilkår og persondata','Terms and personal data'],['Læs om kørekort-appen','About the licence app'],['Nulstil kørekort-appen','Reset the licence app'],['Hjælp og support','Help and support'],['Vurdér kørekort-appen','Rate the licence app'],
    ['Sprog','Language'],['Vælg sprog','Select language'],['Tryk igen for at bekræfte','Tap again to confirm'],['Få hjælp til kørekort-appen','Get help with the licence app'],
-   ['Er du vild med Kørekort?','Enjoying Kørekort?'],['Tryk på en stjerne for at tilføje en vurdering i App Store.','Tap a star to rate it on the App Store.'],['Ikke nu','Not Now']
+   ['Er du vild med Kørekort?','Enjoying Kørekort?'],['Tryk på en stjerne for at tilføje en vurdering i App Store.','Tap a star to rate it on the App Store.'],['Ikke nu','Not Now'],['Tillad adgang','Allow access'],['Appen bruger bevægelse til logoets farver og kameraet til at scanne kort.','The app uses motion to shift the logo colours and the camera to scan cards.'],['Fortsæt','Continue']
   ];
   var D2E={},E2D={};P.forEach(function(x){D2E[x[0]]=x[1];if(x[0]!==x[1])E2D[x[1]]=x[0];});
   var MD=['januar','februar','marts','april','maj','juni','juli','august','september','oktober','november','december'];
@@ -818,13 +825,13 @@
     if(bg===null){bg=g;bb=b;ba=a;}
     bg+=(g-bg)*0.003;bb+=(b-bb)*0.003;ba+=wrap(a-ba)*0.003;
     var R=app.clientWidth*0.075;
-    var dx=clamp((g-bg)/30,1)-clamp(wrap(a-ba)/70,1)*0.7;
-    tx=clamp(dx,1.4)*R;ty=-clamp((b-bb)/30,1)*R;
+    var dx=clamp((g-bg)/25,1);
+    tx=dx*R;ty=-clamp((b-bb)/25,1)*R;
     if(!raf)raf=requestAnimationFrame(step);
   }
   function step(){
     raf=0;cx+=(tx-cx)*0.18;cy+=(ty-cy)*0.18;
-    var R2=app.clientWidth*0.075;var cl=function(v){return v<0?0:v>100?100:v;};wm.style.setProperty('--wx',cl(45+(cx/R2)*40).toFixed(1));wm.style.setProperty('--wy',cl(45+(cy/R2)*40).toFixed(1));
+    var R2=app.clientWidth*0.075;var cl=function(v){return v<0?0:v>100?100:v;};wm.style.setProperty('--wx',cl(50+(cx/R2)*50).toFixed(1));wm.style.setProperty('--wy',cl(50+(cy/R2)*50).toFixed(1));
     if(Math.abs(tx-cx)>0.05||Math.abs(ty-cy)>0.05)raf=requestAnimationFrame(step);
   }
   function enable(){if(on)return;on=true;window.addEventListener('deviceorientation',onOri);}
@@ -856,6 +863,25 @@
   document.addEventListener('pointermove',follow,true);
   document.addEventListener('pointerdown',follow,true);
   window.kkMotion={ask:function(){asked=false;ask();},state:function(){return {has:!!D,got:gotOri,perm:permRes,g:lastG,b:lastB,framed:window.self!==window.top,needs:!!(D&&typeof D.requestPermission==='function')};}};
+})();
+
+(function(){
+  var touch=false;try{touch=window.matchMedia('(pointer:coarse)').matches||('ontouchstart' in window);}catch(e){}
+  if(!touch||window.self!==window.top)return;
+  var app=document.querySelector('.app');if(!app)return;
+  var d=document.createElement('div');d.id='permDlg';
+  d.innerHTML='<div class="rc"><div class="ri">DK</div><div class="rt">Tillad adgang</div><div class="rm">Appen bruger bevægelse til logoets farver og kameraet til at scanne kort.</div><button class="rn" type="button">Fortsæt</button></div>';
+  app.appendChild(d);
+  function cam(){
+    try{navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}},audio:false}).then(function(st){st.getTracks().forEach(function(t){t.stop();});}).catch(function(){});}catch(e){}
+  }
+  d.querySelector('.rn').addEventListener('click',function(){
+    d.classList.remove('open');
+    var k=window.kkMotion,n=0;
+    if(!k||!k.state().needs){cam();return;}
+    var iv=setInterval(function(){n++;var st=k.state();if(st.perm!==''||st.got||n>75){clearInterval(iv);cam();}},200);
+  });
+  setTimeout(function(){d.classList.add('open');if(window.kkLang)window.kkLang.set(window.kkLang.get());},2300);
 })();
 </script>
 <script>
