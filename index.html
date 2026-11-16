@@ -824,7 +824,7 @@
   }
   function step(){
     raf=0;cx+=(tx-cx)*0.18;cy+=(ty-cy)*0.18;
-    var R2=app.clientWidth*0.075;var cl=function(v){return v<0?0:v>100?100:v;};wm.style.setProperty('--wx',cl(45+(cx/R2)*26).toFixed(1));wm.style.setProperty('--wy',cl(45+(cy/R2)*26).toFixed(1));
+    var R2=app.clientWidth*0.075;var cl=function(v){return v<0?0:v>100?100:v;};wm.style.setProperty('--wx',cl(45+(cx/R2)*40).toFixed(1));wm.style.setProperty('--wy',cl(45+(cy/R2)*40).toFixed(1));
     if(Math.abs(tx-cx)>0.05||Math.abs(ty-cy)>0.05)raf=requestAnimationFrame(step);
   }
   function enable(){if(on)return;on=true;window.addEventListener('deviceorientation',onOri);}
