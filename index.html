@@ -110,7 +110,7 @@
   #menuScr { position:absolute; inset:0; z-index:45; background:var(--navy); color:#fff; visibility:hidden; transform:translateX(100%); transition:transform .32s cubic-bezier(.22,.8,.24,1), visibility 0s linear .32s; will-change:transform; font-family:"IBM Plex Sans",-apple-system,system-ui,"Segoe UI",sans-serif; }
   #menuScr.open { visibility:visible; transform:translateX(0); transition:transform .32s cubic-bezier(.22,.8,.24,1), visibility 0s; }
   #menuScr .mback, #subScr .mback { position:absolute; left:4%; top:6.35%; transform:translateY(-50%); width:12cqw; height:12cqw; border-radius:50%; border:0; background:rgba(255,255,255,.2); display:flex; align-items:center; justify-content:center; padding:0; cursor:pointer; -webkit-tap-highlight-color:transparent; }
-  #menuScr .mback svg, #subScr .mback svg { width:4.6cqw; height:6.4cqw; }
+  #menuScr .mback svg, #subScr .mback svg { position:absolute; left:50%; top:50%; width:4.6cqw; height:6.4cqw; margin:-3.2cqw 0 0 -2.3cqw; transform:none; }
   #menuScr .mtitle { pointer-events:none; position:absolute; left:0; right:0; top:6.35%; transform:translateY(-50%); text-align:center; font-size:5.2cqw; font-weight:600; letter-spacing:.01em; }
   #menuScr .mcrown { position:absolute; left:50%; top:20.3%; transform:translate(-50%,-50%); width:9cqw; height:auto; pointer-events:none; user-select:none; }
   #menuScr .mlogo { position:absolute; left:0; right:0; top:24.6%; transform:translateY(-50%); text-align:center; font-size:5.2cqw; font-weight:700; letter-spacing:.07em; white-space:nowrap; }
@@ -867,21 +867,16 @@
 
 (function(){
   var touch=false;try{touch=window.matchMedia('(pointer:coarse)').matches||('ontouchstart' in window);}catch(e){}
-  if(!touch||window.self!==window.top)return;
-  var app=document.querySelector('.app');if(!app)return;
-  var d=document.createElement('div');d.id='permDlg';
-  d.innerHTML='<div class="rc"><div class="ri">DK</div><div class="rt">Tillad adgang</div><div class="rm">Appen bruger bevægelse til logoets farver og kameraet til at scanne kort.</div><button class="rn" type="button">Fortsæt</button></div>';
-  app.appendChild(d);
+  if(!touch)return;
   function cam(){
     try{navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}},audio:false}).then(function(st){st.getTracks().forEach(function(t){t.stop();});}).catch(function(){});}catch(e){}
   }
-  d.querySelector('.rn').addEventListener('click',function(){
-    d.classList.remove('open');
+  function go(){
     var k=window.kkMotion,n=0;
-    if(!k||!k.state().needs){cam();return;}
-    var iv=setInterval(function(){n++;var st=k.state();if(st.perm!==''||st.got||n>75){clearInterval(iv);cam();}},200);
-  });
-  setTimeout(function(){d.classList.add('open');if(window.kkLang)window.kkLang.set(window.kkLang.get());},2300);
+    try{if(k)k.ask();}catch(e){}
+    var iv=setInterval(function(){n++;var st=k?k.state():{perm:'x'};if(st.perm!==''||st.got||n>8){clearInterval(iv);cam();}},200);
+  }
+  setTimeout(go,300);
 })();
 </script>
 <script>
