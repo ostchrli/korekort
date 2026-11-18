@@ -820,15 +820,24 @@
   var lastG=0,lastB=0,permRes='',gotOri=false,bg=null,bb=null,ba=null,tx=0,ty=0,cx=0,cy=0,on=false,raf=0;
   function clamp(v,m){return v>m?m:v<-m?-m:v;}
   function wrap(d){while(d>180)d-=360;while(d<-180)d+=360;return d;}
+  var ub=null;
   function onOri(e){
-    var g=e.gamma,b=e.beta,a=e.alpha;if(g==null||b==null)return;
+    var g=e.gamma,b=e.beta;if(g==null||b==null)return;
     gotOri=true;lastG=g;lastB=b;
-    if(a==null)a=0;
-    if(bg===null){bg=g;bb=b;ba=a;}
-    bg+=(g-bg)*0.003;bb+=(b-bb)*0.003;ba+=wrap(a-ba)*0.003;
+    var gr=g*Math.PI/180,br=b*Math.PI/180;
+    // direction of "up" in the phone's own axes - stays reliable whether the phone lies flat or is held upright
+    var u=[-Math.sin(gr)*Math.cos(br),Math.sin(br),Math.cos(gr)*Math.cos(br)];
+    if(!ub)ub=u.slice();
+    var k=0.003,i;for(i=0;i<3;i++)ub[i]+=(u[i]-ub[i])*k;
+    var m=Math.sqrt(ub[0]*ub[0]+ub[1]*ub[1]+ub[2]*ub[2])||1,n=[ub[0]/m,ub[1]/m,ub[2]/m];
+    var e1=[1-n[0]*n[0],-n[0]*n[1],-n[0]*n[2]],l=Math.sqrt(e1[0]*e1[0]+e1[1]*e1[1]+e1[2]*e1[2]);
+    if(l<0.05)return;
+    e1=[e1[0]/l,e1[1]/l,e1[2]/l];
+    var e2=[n[1]*e1[2]-n[2]*e1[1],n[2]*e1[0]-n[0]*e1[2],n[0]*e1[1]-n[1]*e1[0]];
+    var d=[u[0]-n[0],u[1]-n[1],u[2]-n[2]];
+    var ax=-(d[0]*e1[0]+d[1]*e1[1]+d[2]*e1[2])*57.3,ay=(d[0]*e2[0]+d[1]*e2[1]+d[2]*e2[2])*57.3;
     var R=app.clientWidth*0.075;
-    var dx=clamp((g-bg)/25,1);
-    tx=dx*R;ty=-clamp((b-bb)/25,1)*R;
+    tx=clamp(ax/20,1)*R;ty=-clamp(ay/20,1)*R;
     if(!raf)raf=requestAnimationFrame(step);
   }
   function step(){
@@ -874,19 +883,9 @@
     try{navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}},audio:false}).then(function(st){st.getTracks().forEach(function(t){t.stop();});}).catch(function(){});}catch(e){}
   }
   function go(){
-    var k=window.kkMotion,n=0;
-    if(!k||!k.state().needs){cam();return;}
-    var t0=Date.now();
-    try{k.ask();}catch(e){return;}
-    var iv=setInterval(function(){
-      n++;var st=k.state();
-      if(st.perm!==''||st.got){
-        clearInterval(iv);
-        // Answered by the person (took a moment) -> now ask for the camera.
-        // Refused at once (iOS needs a tap first) -> camera is asked when Scan is opened instead.
-        if(st.got||Date.now()-t0>400)cam();
-      }else if(n>150){clearInterval(iv);}
-    },100);
+    var k=window.kkMotion;
+    try{if(k&&k.state().needs)k.ask();}catch(e){}
+    setTimeout(cam,350);
   }
   setTimeout(go,300);
 })();
