@@ -840,13 +840,14 @@
     var bx=-qb[0],by=-qb[1],bz=-qb[2],bw=qb[3];
     var dx=bw*q[0]+bx*q[3]+by*q[2]-bz*q[1];
     var dy=bw*q[1]-bx*q[2]+by*q[3]+bz*q[0];
+    var dz=bw*q[2]+bx*q[1]-by*q[0]+bz*q[3];
     var dw=bw*q[3]-bx*q[0]-by*q[1]-bz*q[2];
     var sg=dw<0?-1:1;
     // about the phone's own long axis (turning / tipping sideways) and its short axis (tipping forward / back):
     // the same two movements whether the phone lies flat or is held upright
-    var ax=sg*2*dy*57.3,ay=sg*2*dx*57.3;
+    var ax=sg*2*dy*57.3-sg*2*dz*57.3,ay=sg*2*dx*57.3;
     var R=app.clientWidth*0.075;
-    tx=Math.tanh(ax/24)*R;ty=-Math.tanh(ay/24)*R;
+    tx=Math.tanh(ax/11)*R;ty=-Math.tanh(ay/18)*R;
     if(!raf)raf=requestAnimationFrame(step);
   }
   function step(){
