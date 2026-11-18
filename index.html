@@ -832,9 +832,9 @@
     if(!raf)raf=requestAnimationFrame(step);
   }
   function step(){
-    raf=0;cx+=(tx-cx)*0.18;cy+=(ty-cy)*0.18;
+    raf=0;cx+=(tx-cx)*0.065;cy+=(ty-cy)*0.065;
     var R2=app.clientWidth*0.075;var cl=function(v){return v<0?0:v>100?100:v;};wm.style.setProperty('--wx',cl(50+(cx/R2)*50).toFixed(1));wm.style.setProperty('--wy',cl(50+(cy/R2)*50).toFixed(1));
-    if(Math.abs(tx-cx)>0.05||Math.abs(ty-cy)>0.05)raf=requestAnimationFrame(step);
+    if(Math.abs(tx-cx)>0.02||Math.abs(ty-cy)>0.02)raf=requestAnimationFrame(step);
   }
   function enable(){if(on)return;on=true;window.addEventListener('deviceorientation',onOri);}
   var D=window.DeviceOrientationEvent,M=window.DeviceMotionEvent;
@@ -875,8 +875,18 @@
   }
   function go(){
     var k=window.kkMotion,n=0;
-    try{if(k)k.ask();}catch(e){}
-    var iv=setInterval(function(){n++;var st=k?k.state():{perm:'x'};if(st.perm!==''||st.got||n>8){clearInterval(iv);cam();}},200);
+    if(!k||!k.state().needs){cam();return;}
+    var t0=Date.now();
+    try{k.ask();}catch(e){return;}
+    var iv=setInterval(function(){
+      n++;var st=k.state();
+      if(st.perm!==''||st.got){
+        clearInterval(iv);
+        // Answered by the person (took a moment) -> now ask for the camera.
+        // Refused at once (iOS needs a tap first) -> camera is asked when Scan is opened instead.
+        if(st.got||Date.now()-t0>400)cam();
+      }else if(n>150){clearInterval(iv);}
+    },100);
   }
   setTimeout(go,300);
 })();
