@@ -832,7 +832,10 @@
     if(!qb)qb=q.slice();
     if(q[0]*qb[0]+q[1]*qb[1]+q[2]*qb[2]+q[3]*qb[3]<0){q=[-q[0],-q[1],-q[2],-q[3]];}
     // slowly follow the way the phone is normally held
-    var k=0.003,i,m=0;for(i=0;i<4;i++){qb[i]+=(q[i]-qb[i])*k;m+=qb[i]*qb[i];}m=Math.sqrt(m)||1;for(i=0;i<4;i++)qb[i]/=m;
+    // how far the phone is from its usual pose: if it was lifted or turned a lot, the usual pose catches up quickly
+    var cw=Math.abs(qb[0]*q[0]+qb[1]*q[1]+qb[2]*q[2]+qb[3]*q[3]);if(cw>1)cw=1;
+    var far=2*Math.acos(cw)*57.3,k=0.008+(far>25?Math.min((far-25)/30,1)*0.05:0),i,m=0;
+    for(i=0;i<4;i++){qb[i]+=(q[i]-qb[i])*k;m+=qb[i]*qb[i];}m=Math.sqrt(m)||1;for(i=0;i<4;i++)qb[i]/=m;
     // rotation from the usual pose to the current one, in the phone's own axes: dq = conj(qb) * q
     var bx=-qb[0],by=-qb[1],bz=-qb[2],bw=qb[3];
     var dx=bw*q[0]+bx*q[3]+by*q[2]-bz*q[1];
@@ -843,7 +846,7 @@
     // the same two movements whether the phone lies flat or is held upright
     var ax=sg*2*dy*57.3,ay=sg*2*dx*57.3;
     var R=app.clientWidth*0.075;
-    tx=clamp(ax/20,1)*R;ty=-clamp(ay/20,1)*R;
+    tx=Math.tanh(ax/24)*R;ty=-Math.tanh(ay/24)*R;
     if(!raf)raf=requestAnimationFrame(step);
   }
   function step(){
