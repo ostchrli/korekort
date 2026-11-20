@@ -812,7 +812,7 @@
   rd.querySelector('.rn').addEventListener('click',closeR);
   rd.addEventListener('click',function(e){if(e.target===rd)closeR();});
   rd.querySelectorAll('.rs button').forEach(function(b){b.addEventListener('click',function(){var v=+b.getAttribute('data-n');try{localStorage.setItem('kk-rate',String(v));}catch(e){}rd.querySelectorAll('.rs button').forEach(function(x){x.classList.toggle('on',+x.getAttribute('data-n')<=v);});setTimeout(closeR,450);});});
-  Object.keys(C).forEach(function(id){$(id).addEventListener('click',function(){if(id==='mRate'){var u='https://apps.apple.com/dk/app/k%C3%B8rekort/id1506727482';try{window.location.href='itms-apps://apps.apple.com/dk/app/id1506727482';}catch(e){}setTimeout(function(){if(!document.hidden){try{window.open(u,'_blank');}catch(e){window.location.href=u;}}},900);return;}openS(id);});});
+  Object.keys(C).forEach(function(id){$(id).addEventListener('click',function(){if(id==='mRate'){var u='https://apps.apple.com/dk/app/id1506727482?action=write-review';try{window.location.href='itms-apps://apps.apple.com/dk/app/id1506727482?action=write-review';}catch(e){}setTimeout(function(){if(!document.hidden){try{window.open(u,'_blank');}catch(e){window.location.href=u;}}},900);return;}openS(id);});});
   $('sBack').addEventListener('click',closeS);
   $('mBack').addEventListener('click',closeS);
   document.addEventListener('keydown',function(e){if(e.key==='Escape')closeS();});
