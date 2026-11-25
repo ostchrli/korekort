@@ -230,14 +230,16 @@
   #zoomPhoto .zstrip { background:#e8e5d6 !important; }
   #zoomPhoto .zstrip::after { background:linear-gradient(119deg, #e6d6ea 0%, #e3d3e8 36%, #d3e6ea 41.5%, #c9ebe3 43.5%, #d4eadf 50%, #e6e6d6 60%, #e9e5d3 100%) !important; background-size:200% 100% !important; background-position:calc(var(--wx) * 1%) 0 !important; }
   #zoomPhoto .zstrip span { color:rgba(255,255,255,.62) !important; text-shadow:none !important; }
-  #zoomPhoto .zlogo .zh { background:linear-gradient(119deg, #e6d6ea 0%, #e3d3e8 36%, #d3e6ea 41.5%, #c9ebe3 43.5%, #d4eadf 50%, #e6e6d6 60%, #e9e5d3 100%) !important; background-size:200% 100% !important; background-position:calc(var(--wx) * 1%) 0 !important; opacity:1 !important; }
+  #zoomPhoto .zlogo .zh { background:linear-gradient(315deg,#c092ed 0.0%,#86a2ff 3.3%,#86cce8 7.5%,#8ce6b8 11.7%,#f5b6a8 15.8%,#ff86a6 20.0%,#cf8ee8 24.2%,#86a2ff 28.3%,#86cce8 32.5%,#8ce6b8 36.7%,#f5b6a8 40.8%,#ff86a6 45.0%,#cf8ee8 49.2%,#86a2ff 53.3%,#86cce8 57.5%,#8ce6b8 61.7%,#f5b6a8 65.8%,#ff86a6 70.0%,#cf8ee8 74.2%,#86a2ff 78.3%,#86cce8 82.5%,#8ce6b8 86.7%,#f5b6a8 90.8%,#ff86a6 95.0%,#cf8ee8 99.2%,#c092ed 100.0%) !important; background-size:calc(var(--w) * 1.2) calc(var(--w) * 1.2) !important; background-repeat:no-repeat !important; background-position:calc(var(--wd,50) * var(--w) * -.009) calc(var(--wd,50) * var(--w) * -.009) !important; opacity:1 !important; }
   /* v132: DK stamp original blue/red + light green/light blue, sweeping along the top-left -> bottom-right diagonal */
-  .wm { background:linear-gradient(315deg,#d4c1f8 0.0%,#9ab2ff 3.3%,#b8e8f6 7.5%,#aef4cc 11.7%,#fcd8d8 15.8%,#ff9ab6 20.0%,#dcc0f6 24.2%,#9ab2ff 28.3%,#b8e8f6 32.5%,#aef4cc 36.7%,#fcd8d8 40.8%,#ff9ab6 45.0%,#dcc0f6 49.2%,#9ab2ff 53.3%,#b8e8f6 57.5%,#aef4cc 61.7%,#fcd8d8 65.8%,#ff9ab6 70.0%,#dcc0f6 74.2%,#9ab2ff 78.3%,#b8e8f6 82.5%,#aef4cc 86.7%,#fcd8d8 90.8%,#ff9ab6 95.0%,#dcc0f6 99.2%,#d4c1f8 100.0%) !important; background-size:400% 400% !important; background-repeat:no-repeat !important; background-position:calc(var(--wd,50)*1%) calc(var(--wd,50)*1%) !important; opacity:1 !important; }
+  .wm { background:linear-gradient(315deg,#d3c5eb 0.0%,#c0cbf0 3.3%,#c4dcee 7.5%,rgba(200,240,218,.30) 11.7%,#f0d6d6 15.8%,#f0c0cd 20.0%,#d8c4ea 24.2%,#c0cbf0 28.3%,#c4dcee 32.5%,rgba(200,240,218,.30) 36.7%,#f0d6d6 40.8%,#f0c0cd 45.0%,#d8c4ea 49.2%,#c0cbf0 53.3%,#c4dcee 57.5%,rgba(200,240,218,.30) 61.7%,#f0d6d6 65.8%,#f0c0cd 70.0%,#d8c4ea 74.2%,#c0cbf0 78.3%,#c4dcee 82.5%,rgba(200,240,218,.30) 86.7%,#f0d6d6 90.8%,#f0c0cd 95.0%,#d8c4ea 99.2%,#d3c5eb 100.0%) !important; background-size:400% 400% !important; background-repeat:no-repeat !important; background-position:calc(var(--wd,50)*1%) calc(var(--wd,50)*1%) !important; opacity:1 !important; }
 
   /* v140: oblong three-dots button */
   .dots { width:13.8cqw !important; right:4% !important; border-radius:999px !important; }
   /* v142: keep the stamp ring and edges as clear as before */
-  .wm { filter:drop-shadow(0 0 .4px rgba(80,66,175,1)) drop-shadow(0 0 .9px rgba(80,66,175,.8)) drop-shadow(0 0 1.8px rgba(80,66,175,.4)) saturate(1.3) !important; }
+  .wm { filter:drop-shadow(0 0 .4px rgba(80,66,175,1)) drop-shadow(0 0 .9px rgba(80,66,175,.8)) drop-shadow(0 0 1.8px rgba(80,66,175,.4)) saturate(.85) !important; }
+
+  #zoomPhoto .zlogo { opacity:.95 !important; --wd:50; }
 
 
   .tab { z-index:6; }
@@ -928,7 +930,7 @@ body.scanOn .hpill{ opacity:0; pointer-events:none; }
 (function(){
   var wm=document.querySelector('.wm'),app=document.querySelector('.app');
   if(!wm||!app)return;
-  var lastG=0,lastB=0,permRes='',gotOri=false,bg=null,bb=null,ba=null,tx=0,ty=0,cx=0,cy=0,on=false,raf=0;
+  var lastG=0,lastB=0,permRes='',gotOri=false,bg=null,bb=null,ba=null,tx=0,ty=0,cx=0,cy=0,rx2=0,ry2=0,cx2=0,cy2=0,on=false,raf=0;
   function clamp(v,m){return v>m?m:v<-m?-m:v;}
   function wrap(d){while(d>180)d-=360;while(d<-180)d+=360;return d;}
   var qb=null;
@@ -958,12 +960,12 @@ body.scanOn .hpill{ opacity:0; pointer-events:none; }
     // the same two movements whether the phone lies flat or is held upright
     var ax=sg*2*dy*57.3-sg*2*dz*57.3,ay=sg*2*dx*57.3;
     var R=app.clientWidth*0.075;
-    tx=Math.tanh(ax/11)*R;ty=-Math.tanh(ay/18)*R;
+    tx=Math.tanh(ax/11)*R;ty=-Math.tanh(ay/18)*R;rx2=ax/11*R;ry2=-ay/18*R;
     if(!raf)raf=requestAnimationFrame(step);
   }
   function step(){
     raf=0;cx+=(tx-cx)*0.065;cy+=(ty-cy)*0.065;
-    var R2=app.clientWidth*0.075;var cl=function(v){return v<0?0:v>100?100:v;};wm.style.setProperty('--wx',cl(50+(cx/R2)*50).toFixed(1));wm.style.setProperty('--wy',cl(50+(cy/R2)*50).toFixed(1));var zs=document.getElementById('zStrip');if(zs){zs.style.setProperty('--wx',cl(50+(cx/R2)*50).toFixed(1));}var zl=document.getElementById('zLogo');if(zl){zl.style.setProperty('--wx',cl(50+(cx/R2)*50).toFixed(1));}wm.style.setProperty('--wd',(100-(cl(50+(cx/R2)*50)+cl(50+(cy/R2)*50))/2).toFixed(1));
+    var R2=app.clientWidth*0.075;var cl=function(v){return v<0?0:v>100?100:v;};wm.style.setProperty('--wx',cl(50+(cx/R2)*50).toFixed(1));wm.style.setProperty('--wy',cl(50+(cy/R2)*50).toFixed(1));var zs=document.getElementById('zStrip');if(zs){zs.style.setProperty('--wx',cl(50+(cx/R2)*50).toFixed(1));}var zl=document.getElementById('zLogo');if(zl){zl.style.setProperty('--wx',cl(50+(cx/R2)*50).toFixed(1));}cx2+=(rx2-cx2)*0.065;cy2+=(ry2-cy2)*0.065;var uu=100-(50+(cx2+cy2)/R2*25),PP=33.3333,ww=((uu-50)%PP+PP)%PP+50-PP/2;wm.style.setProperty('--wd',ww.toFixed(2));if(zl)zl.style.setProperty('--wd',ww.toFixed(2));if(Math.abs(rx2-cx2)>0.02||Math.abs(ry2-cy2)>0.02)raf=raf||requestAnimationFrame(step);
     if(Math.abs(tx-cx)>0.02||Math.abs(ty-cy)>0.02)raf=requestAnimationFrame(step);
   }
   function enable(){if(on)return;on=true;window.addEventListener('deviceorientation',onOri);}
