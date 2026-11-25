@@ -960,7 +960,7 @@ body.scanOn .hpill{ opacity:0; pointer-events:none; }
     // the same two movements whether the phone lies flat or is held upright
     var ax=sg*2*dy*57.3-sg*2*dz*57.3,ay=sg*2*dx*57.3;
     var R=app.clientWidth*0.075;
-    tx=Math.tanh(ax/11)*R;ty=-Math.tanh(ay/18)*R;rx2=ax/11*R;ry2=-ay/18*R;
+    tx=Math.tanh(ax/11)*R;ty=-Math.tanh(ay/18)*R;rx2=ax/38*R;ry2=-ay/58*R;
     if(!raf)raf=requestAnimationFrame(step);
   }
   function step(){
